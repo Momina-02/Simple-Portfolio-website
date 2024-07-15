@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #180835;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        html, body {
+            height: 100%;
+        }
+        .card, .section {
+            display: none;
+        }
+        .card.active, .section.active {
+            display: flex;
+        }
+        .card {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 30px;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            width: 70%;
+            height: 480px;
+            background: #12c2e9;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #f64f59, #c471ed, #12c2e9);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #f64f59, #c471ed, #12c2e9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+        .left-container {
+            background: #000000; 
+            background: -webkit-linear-gradient(to right, #434343, #000000);
+            background: linear-gradient(to right, #434343, #000000); 
+            flex: 1;
+            max-width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 430px;
+            padding: 10px;
+            margin: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        .right-container {
+            background: #000000; 
+            background: -webkit-linear-gradient(to left, #434343, #000000);
+            background: linear-gradient(to left, #434343, #000000); 
+            flex: 1;
+            max-width: 70%;
+            height: 430px;
+            padding: 10px;
+            margin: 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        @media only screen and (max-width: 860px) {
+            .card {
+                flex-direction: column;
+                margin: 10px;
+                height: auto;
+                width: 90%;
+            }
+            .left-container {
+                flex: 1;
+                max-width: 100%; 
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .card {
+                flex-direction: column;
+                margin: 10px;
+            }
+            .left-container {
+                flex: 1;
+                max-width: 100%; 
+            }
+        }
+        img {
+            width: 200px;
+            height: 200px;
+            max-width: 200px;
+            border-radius: 50%;
+            margin: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .gradienttext {
+            background-image: linear-gradient(to right, #ee00ff 0%, #fbff00 100%);
+            color: transparent;
+            -webkit-background-clip: text;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: aliceblue;
+        }
+        table {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 280px;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            color: white;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+        .credit a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 800;
+        }
+        .credit {
+            color: #fff;
+            text-align: center;
+            margin-top: 10px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .section {
+            width: 70%;
+            margin-top: 50px;
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #12c2e9;
+            color: white;
+            border: none;
+        }
+        .nav li.active a {
+            background-color: #12c2e9;
+            color: white;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            function activateSection(sectionId) {
+                $(".card, .section").removeClass("active");
+                $(sectionId).addClass("active");
+                $(".nav li").removeClass("active");
+                $('.nav a[href="' + sectionId + '"]').parent().addClass("active");
+            }
+
+            $(".nav a").click(function(e){
+                e.preventDefault();
+                var target = $(this).attr("href");
+                activateSection(target);
+                // Update URL hash without jumping
+                history.pushState(null, null, target);
+            });
+
+            // Set initial active section based on URL hash
+            var hash = window.location.hash || "#about";
+            activateSection(hash);
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">PROFILE</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#about">ABOUT</a></li>
+                <li><a href="#services">SERVICES</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+                <li><a href="#feedback">FEEDBACK</a></li>
+                <li><a href="#logout">LOGOUT</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="about" class="card active">
+        <div class="left-container">
+            <img src="./sanpchat.png" alt="Profile Image">
+            <h2 class="gradienttext">YOUR NAME</h2>
+            <p>Computer Scientist</p>
+        </div>
+        <div class="right-container">
+            <h3 class="gradienttext">Profile Details</h3>
+            <table>
+                <tr>
+                    <td>Name :</td>
+                    <td>Your Name</td>
+                </tr>
+                <tr>
+                    <td>Age :</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>Mobile :</td>
+                    <td>+92312345678</td>
+                </tr>
+                <tr>
+                    <td>Email :</td>
+                    <td>example@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Address :</td>
+                    <td>Your Address</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <h3 class="gradienttext">Services</h3>
+        <p style="color: aliceblue;">Here are some of the services I offer:</p>
+        <ul style="color: aliceblue;">
+            <li>Web Development</li>
+            <li>App Development</li>
+            <li>Consulting</li>
+        </ul>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <h3 class="gradienttext">Contact</h3>
+        <p style="color: aliceblue;">Feel free to reach out to me via:</p>
+        <ul style="color: aliceblue;">
+            <li>Email: example@gmail.com</li>
+            <li>Phone: +92312345678</li>
+        </ul>
+    </section>
+
+    <!-- Feedback Section -->
+    <section id="feedback" class="section">
+        <h3 class="gradienttext">Feedback</h3>
+        <p style="color: aliceblue;">Your feedback is important to me!</p>
+        <textarea placeholder="Write your feedback here..."></textarea>
+        <button>Submit</button>
+    </section>
+
+    <!-- Logout Section -->
+    <section id="logout" class="section">
+        <h3 class="gradienttext">Logout</h3>
+        <p style="color: aliceblue;">You have been logged out successfully.</p>
+    </section>
+</body>
+</html>
